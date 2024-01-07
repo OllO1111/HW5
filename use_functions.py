@@ -36,6 +36,12 @@
 
 
 def account_increase(acc_internal, acc_inc):
+    """
+    1. пополнение счета
+    :param acc_internal: Основной счет
+    :param acc_inc: Сумма пополнения
+    :return: Основной счет
+    """
     return acc_internal + acc_inc
 
 
@@ -46,7 +52,7 @@ def purchase(history, acc_internal, acc_dec, acc_dec_name):
     :param acc_internal: Основной счет
     :param acc_dec: Сумма покупки
     :param acc_dec_name: Что покупаем
-    :return:
+    :return: История покупок, Основной счет, результат операции
     """
     if acc_internal >= acc_dec:
         acc_internal -= acc_dec
@@ -56,13 +62,13 @@ def purchase(history, acc_internal, acc_dec, acc_dec_name):
         return history, acc_internal, 'Неверная сумма'
 
 
-def print_history(history):
-    print('Ваши покупки:')
-    for key, value in history.items():
-        print(key, value)
-
-
 def bank_acc(acc, history_acc):
+    """
+    Основная функция ведения счета
+    :param acc: Основной счет
+    :param history_acc: История покупок
+    :return: Основной счет, История покупок
+    """
     while True:
         print(f'Ваш счет {acc} тугриков')
         print('1. пополнение счета')
@@ -78,7 +84,9 @@ def bank_acc(acc, history_acc):
                                                 input('что купим? '))
             print(result)
         elif choice == '3':
-            print_history(history_acc)
+            print('Ваши покупки:')
+            for key, value in history_acc.items():
+                print(key, value)
         elif choice == '4':
             break
         else:
