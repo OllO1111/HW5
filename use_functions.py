@@ -33,30 +33,36 @@
 
 Для реализации основного меню можно использовать пример ниже или написать свой
 """
-history = {}
 
-def account_change(reason, summ):
-    history[reason] = summ
-def account_increase(acc_internal):
-    acc_inc = int(input('На сколько хотите пополнить счет? '))
-    acc_internal += acc_inc
-    #account_change('Пополнение', acc_inc)
-    return acc_internal
-def purchase(acc_internal):
-    acc_dec = int(input('На сколько хотите совершить попкупку? '))
+
+def account_increase(acc_internal, acc_inc):
+    return acc_internal + acc_inc
+
+
+def purchase(history, acc_internal, acc_dec, acc_dec_name):
+    """
+    2. покупка
+    :param history: История покупок
+    :param acc_internal: Основной счет
+    :param acc_dec: Сумма покупки
+    :param acc_dec_name: Что покупаем
+    :return:
+    """
     if acc_internal >= acc_dec:
-        acc_dec_name = input('что купим? ')
         acc_internal -= acc_dec
-        account_change(acc_dec_name, ~acc_dec)
+        history[acc_dec_name] = acc_dec
+        return history, acc_internal, 'Покупка совершена'
     else:
-        print('Неверная сумма')
-    return acc_internal
-def print_history():
+        return history, acc_internal, 'Неверная сумма'
+
+
+def print_history(history):
     print('Ваши покупки:')
     for key, value in history.items():
         print(key, value)
 
-def bank_acc(acc):
+
+def bank_acc(acc, history_acc):
     while True:
         print(f'Ваш счет {acc} тугриков')
         print('1. пополнение счета')
@@ -66,16 +72,19 @@ def bank_acc(acc):
 
         choice = input('Выберите пункт меню ')
         if choice == '1':
-            acc = account_increase(acc)
+            acc = account_increase(acc, int(input('На сколько хотите пополнить счет? ')))
         elif choice == '2':
-            acc = purchase(acc)
+            history_acc, acc, result = purchase(history_acc, acc, int(input('На сколько хотите совершить покупку? ')),
+                                                input('что купим? '))
+            print(result)
         elif choice == '3':
-            print_history()
+            print_history(history_acc)
         elif choice == '4':
             break
         else:
             print('Неверный пункт меню')
-    return acc
+    return acc, history_acc
+
 
 if __name__ == '__main__':
-    bank_acc(2000)
+    bank_acc(2000, {})

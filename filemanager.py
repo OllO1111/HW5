@@ -4,6 +4,7 @@ import use_functions
 
 # Пререквизиты
 acc_all = 1000  # Начальный счет
+history_acc_purchase = {}  # История покупок
 # Главное меню
 main_menu = {1: 'создать папку',
              2: 'удалить (файл/папку)',
@@ -126,7 +127,7 @@ if __name__ == '__main__':
             elif key_input == 9:
                 victory.quiz()
             elif key_input == 10:
-                acc_all = use_functions.bank_acc(acc_all)
+                acc_all, history_acc_purchase = use_functions.bank_acc(acc_all, history_acc_purchase)
             elif key_input == 11:
                 result = change_dir(input('Введите имя новой директории: '))
                 print(result)
