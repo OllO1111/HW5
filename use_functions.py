@@ -76,3 +76,6 @@ def bank_acc(acc):
         else:
             print('Неверный пункт меню')
     return acc
+
+if __name__ == '__main__':
+    bank_acc(2000)
