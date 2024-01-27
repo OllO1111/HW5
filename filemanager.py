@@ -1,23 +1,6 @@
 import os, shutil, sys
 import victory
-import use_functions
-
-# Пререквизиты
-acc_all = 1000  # Начальный счет
-history_acc_purchase = {}  # История покупок
-# Главное меню
-main_menu = {1: 'создать папку',
-             2: 'удалить (файл/папку)',
-             3: 'копировать (файл/папку)',
-             4: 'просмотр содержимого рабочей директории',
-             5: 'посмотреть только папки',
-             6: 'посмотреть только файлы',
-             7: 'просмотр информации об операционной системе',
-             8: 'создатель программы',
-             9: 'играть в викторину',
-             10: 'мой банковский счет',
-             11: 'смена рабочей директории',
-             12: 'выход'}
+import bank_account
 
 
 def new_dir(folder):
@@ -82,14 +65,45 @@ def change_dir(change_dir_name):
     :param change_dir_name: имя новой директории
     :return: Результат операции
     """
-    if os.path.isdir(change_dir_name):
+    if os.path.isdir(change_dir_name) or change_dir_name == '..':
         os.chdir(change_dir_name)
         return f'Текущая директория сменена на: {os.getcwd()}'
     else:
         return f'Директории {change_dir_name} не существует'
 
 
+def dir_save(files, dirs, dir_file):
+    """
+    сохранить содержимое рабочей директории в файл
+    :param files: список файлов
+    :param dirs: список директорий
+    :param dir_file: полный путь к сохраняемому файлу
+    :return: содержимое файла
+    """
+    with open(dir_file, 'w') as f:
+        f.write(f'files: {files}\n')
+        f.write(f'dirs: {dirs}')
+
+    with open(dir_file, 'r') as f:
+        return f.read()
+
 if __name__ == '__main__':
+    # Главное меню
+    dir_main = os.getcwd()
+    dir_file = dir_main + '\\listdir.txt'
+    main_menu = {1: 'создать папку',
+                 2: 'удалить (файл/папку)',
+                 3: 'копировать (файл/папку)',
+                 4: 'просмотр содержимого рабочей директории',
+                 5: 'посмотреть только папки',
+                 6: 'посмотреть только файлы',
+                 7: 'просмотр информации об операционной системе',
+                 8: 'создатель программы',
+                 9: 'играть в викторину',
+                 10: 'мой банковский счет',
+                 11: 'смена рабочей директории',
+                 12: 'сохранить содержимое рабочей директории в файл',
+                 13: 'выход'}
     while True:
         print('Текущая директория:', os.getcwd())
         # Прорисовка меню
@@ -127,11 +141,15 @@ if __name__ == '__main__':
             elif key_input == 9:
                 victory.quiz()
             elif key_input == 10:
-                acc_all, history_acc_purchase = use_functions.bank_acc(acc_all, history_acc_purchase)
+                bank_account.bank_acc(dir_main)
             elif key_input == 11:
                 result = change_dir(input('Введите имя новой директории: '))
                 print(result)
             elif key_input == 12:
+                files = ','.join(list(filter(lambda x: os.path.isfile(x), os.listdir())))
+                dirs = ','.join(list(filter(lambda x: os.path.isdir(x), os.listdir())))
+                dir_save(files, dirs, dir_file)
+            elif key_input == 13:
                 print('До новых встреч')
                 break
         else:
