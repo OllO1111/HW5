@@ -64,8 +64,10 @@ def test_bank_account_purchase():
     assert bank_account.purchase({'car': 155568, 'food': 594}, 765, 1565, 'notebook') == ({'car': 155568, 'food': 594}, 765, 'Неверная сумма')
 
 def test_filemanager_dir_save():
+    """Тест функции сохранения содержимого директории"""
     assert filemanager.dir_save('file1,file2', 'dir1,dir2', 'test') == 'files: file1,file2\ndirs: dir1,dir2'
 
 def bank_account_bank_save_load():
+    """Тест функции сохранения в файл и чтения банковского счета и истории покупок"""
     bank_account.bank_save({"acc": 684, "history_purchase": {"food": 10, "dress": 20, "car": 60, "computer": 10, "scooter": 40}},test)
     assert bank_account.bank_load(test) == 684, {"food": 10, "dress": 20, "car": 60, "computer": 10, "scooter": 40}
